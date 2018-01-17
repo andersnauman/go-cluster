@@ -97,6 +97,7 @@ func (cl *ClientList) VerifyClients() {
 				if _, err := net.Dial("tcp", fmt.Sprintf("%s:%d", client.IPv4.String(), client.Port)); err == nil {
 					cl.m.Lock()
 					cl.Clients[i].Status = Online
+					cl.Checksum = cl.computeChecksum()
 					cl.m.Unlock()
 				}
 			}

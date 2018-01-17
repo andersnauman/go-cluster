@@ -42,6 +42,7 @@ func (m Multicast) Listen(cl *ClientList, errCh chan error) {
 		errCh <- err
 		return
 	}
+	defer l.Close()
 	l.SetReadBuffer(m.MaxDatagramSize)
 	for {
 		clTemp := ClientList{}
@@ -60,10 +61,6 @@ func (m Multicast) Listen(cl *ClientList, errCh chan error) {
 		if clTemp.Checksum == clTemp.computeChecksum() {
 			cl.recvClients <- clTemp.Clients
 		}
-		//fmt.Printf("%+v\n", c.Clients)
-		//if cTemp.Checksum == cTemp.computeChecksum() {
-		//	c.compare(&cTemp, src.IP)
-		//}
 	}
 }
 
